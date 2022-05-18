@@ -4,9 +4,9 @@ let enemies: BadGuy[] = [];
 let walls: Wall[] = [];
 let ariana: GoodOne;
 let matriz: number[][] = [
-  [1, 0, 3, 0, 0, 0, 0, 0, 1, 1, 0, 1],
+  [1, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 1],
 
-  [1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0],
+  [1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0],
 
   [0, 0, 2, 0, 0, 1, 0, 0, 0, 0, 0, 0],
 
@@ -56,9 +56,14 @@ function draw() {
   rectMode(CENTER);
 
   background(0);
+  let seconds: number = millis()/1000;
 
   enemies.forEach(enemyPete => {
     enemyPete.draw()
+    
+  if(seconds%3 <= 0.05){
+    enemyPete.movementRandom();
+  }
   })
 
   walls.forEach(wally => {
@@ -66,6 +71,13 @@ function draw() {
   })
 
   ariana.draw()
+
+  ariana.bullets.forEach(baliana=> {
+    baliana.validateWalls(walls, ariana.bullets);
+  })
+
+  
+
 }
 
 function keyPressed() {
@@ -99,5 +111,21 @@ function keyPressed() {
       matriz[ariana.y][ariana.x]= 2;
       }
       break;
+
+      case 87: //W
+        ariana.shootUp();
+        break;
+
+        case 83://s
+          ariana.shootDown();
+          break;
+
+          case 68: // d
+          ariana.shootRight();
+          break;
+
+          case 65: // a
+          ariana.shootLeft();
+          break;
   }
 }
